@@ -1,6 +1,7 @@
 package com.project.movies.controller;
 
 import com.project.movies.model.Filme;
+import com.project.movies.model.Genero;
 import com.project.movies.service.FilmeService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,6 +35,24 @@ public class FilmeController {
             return new ResponseEntity<>(filmeService.buscarFilmePorNome(nome), HttpStatus.OK);
         } catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Filme com nome " + nome + " não encontrado");
+        }
+    }
+
+    @GetMapping("/genero/id/{id}")
+    public ResponseEntity<List<Filme>> buscarFilmesPorGeneroId(@PathVariable("id") Long id) {
+        try {
+            return new ResponseEntity<>(filmeService.buscarFilmesPorGenero(id), HttpStatus.OK);
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Filmes com gênero com ID " + id + " não encontrados");
+        }
+    }
+
+    @GetMapping("/genero")
+    public ResponseEntity<List<Genero>> buscarGeneros() {
+        try {
+            return new ResponseEntity<>(filmeService.buscarListaGeneros(), HttpStatus.OK);
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Lista vazia");
         }
     }
 }

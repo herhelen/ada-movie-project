@@ -6,9 +6,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.*;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Entity
 @Getter
 @Setter
@@ -16,20 +13,9 @@ import java.util.List;
 @AllArgsConstructor
 @ToString
 @EqualsAndHashCode(of="id")
-public class Filme {
+public class Genero {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
+    private long id;
     private String nome;
-
-    private String descricao;
-
-    private String data;
-
-    private String duracao;
-
-    private List<String> generos = new ArrayList<>();
-
-    private String poster;
 }
