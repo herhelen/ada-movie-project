@@ -3,7 +3,6 @@ package com.project.movies.dto;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 
-import java.util.HashMap;
 import java.util.List;
 
 @Data

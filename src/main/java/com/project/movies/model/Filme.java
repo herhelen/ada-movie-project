@@ -15,6 +15,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 @EqualsAndHashCode(of="id")
 public class Filme {
     @Id
@@ -30,10 +31,6 @@ public class Filme {
     private String duracao;
 
     private List<String> generos = new ArrayList<>();
-
-    private List<String> diretor;
-
-    private List<String> atores;
 
     private String poster;
 }
