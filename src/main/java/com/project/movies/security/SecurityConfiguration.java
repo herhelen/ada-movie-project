@@ -39,7 +39,7 @@ public class SecurityConfiguration {
     protected SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
         http
                 .authorizeHttpRequests((auth)-> auth
-                        .requestMatchers("/api/v1/login").permitAll()//ALTERAR-------------------------------------
+                        .requestMatchers("/api/v1/login*").permitAll()//ALTERAR-------------------------------------
                         .anyRequest().authenticated()
                 ).exceptionHandling(exception -> exception.authenticationEntryPoint(jwtAuthenticationEntryPoint)
                 ).sessionManagement(session -> session
