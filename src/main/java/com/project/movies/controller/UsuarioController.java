@@ -1,9 +1,11 @@
+
 package com.project.movies.controller;
 
 import com.project.movies.model.Usuario;
 import com.project.movies.service.UsuarioService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -20,6 +22,7 @@ public class UsuarioController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("ROLE_ADMIN")
     public List<Usuario> buscarTodosOsContatos() {
         try {
             return usuarioService.listarTodosOsUsuarios();
@@ -30,6 +33,7 @@ public class UsuarioController {
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("ROLE_ADMIN")
     public Usuario buscarContatoPorId(@PathVariable("id") Long id) {
         try {
             return usuarioService.buscarPorId(id);
@@ -40,6 +44,7 @@ public class UsuarioController {
 
     @GetMapping("/apelido/{apelido}")
     @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("ROLE_ADMIN")
     public List<Usuario> buscarContatosPorNome(@PathVariable("apelido") String apelido) {
         try {
             return usuarioService.buscarPorApelido(apelido);
@@ -50,6 +55,7 @@ public class UsuarioController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
+    @PreAuthorize("ROLE_ADMIN")
     public Usuario criarContato(@RequestBody Usuario usuario) {
         try {
             return usuarioService.criarOuAtualizarUsuario(usuario);
@@ -60,6 +66,7 @@ public class UsuarioController {
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
+    @PreAuthorize("ROLE_ADMIN")
     public Usuario atualizarContato(@PathVariable("id") Long id, @Valid @RequestBody Usuario usuarioAtualizado) {
         try {
             return usuarioService.atualizarUsuario(id, usuarioAtualizado);
@@ -70,6 +77,7 @@ public class UsuarioController {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PreAuthorize("ROLE_ADMIN")
     public void deletarContato(@PathVariable("id") Long id) {
         try {
             usuarioService.deletarUsuario(id);

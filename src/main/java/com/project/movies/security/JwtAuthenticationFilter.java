@@ -1,9 +1,11 @@
 package com.project.movies.security;
 
+import com.project.movies.repository.UsuarioRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
@@ -18,34 +20,28 @@ import java.io.IOException;
 
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
-    public JwtAuthenticationFilter (JwtTokenProvider tokenProvider,  UserDetailsService userDetailsService){
-        this.tokenProvider = tokenProvider;
-        this.userDetailsService = userDetailsService;
-    }
+    @Autowired
+    JwtTokenProvider jwtTokenProvider;
+    @Autowired
+    UsuarioRepository usuarioRepository;
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-    String token = getTokenFromRequest(request);
-        if(StringUtils.hasText(token)&& tokenProvider.validadeToken(token)) {
+        String token = this.recoverToken(request);
+        if(token != null){
+            String email = jwtTokenProvider.validateToken(token);;
+            UserDetails customer = usuarioRepository.findUsuarioByEmail(jwtTokenProvider.validateToken(token));
 
-            String username = tokenProvider.getUsername(token);
-            UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-
-            UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
-                    userDetails, null, userDetails.getAuthorities()
-            );
-            authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-            SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+            UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(customer, null, customer.getAuthorities());
+            SecurityContextHolder.getContext().setAuthentication(authentication);
         }
-        filterChain.doFilter(request,response);
-    }
-    private final JwtTokenProvider tokenProvider;
-    private final UserDetailsService userDetailsService;
-    private String getTokenFromRequest(HttpServletRequest req){
-        String bearer = req.getHeader("Authorization");
-        if (StringUtils.hasText(bearer) && bearer.startsWith("Bearer ")){
-            return bearer.substring(7);
-        }
-        return null;
+        filterChain.doFilter(request, response);
     }
 
+    private String recoverToken(HttpServletRequest request){
+        String authHeader = request.getHeader("Authorization");
+        if(authHeader == null) return null;
+        return authHeader.replace("Bearer ", "");
+    }
 }
+

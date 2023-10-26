@@ -19,12 +19,12 @@ private final JwtTokenProvider tokenProvider;
         this.tokenProvider = tokenProvider;
     }
 
-    public AuthResponse login(LoginDTO dto){
-        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
-                dto.getUsername(), dto.getPassword()
-        ));
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        String token = tokenProvider.generateToken(authentication);
-        return  new AuthResponse(token);
-    }
+//    public AuthResponse login(LoginDTO dto){
+//        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+//                dto.getUsername(), dto.getPassword()
+//        ));
+//        SecurityContextHolder.getContext().setAuthentication(authentication);
+//        String token = tokenProvider.generateToken(authentication);
+//        return  new AuthResponse(token);
+//    }
 }

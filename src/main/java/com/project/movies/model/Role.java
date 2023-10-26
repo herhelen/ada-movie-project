@@ -7,13 +7,15 @@ import lombok.Setter;
 import java.util.Objects;
 
 @Entity
-@Table(name="roles")
+@Table(name = "roles")
 @Getter
 @Setter
 public class Role {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String name;
 
     @Override
