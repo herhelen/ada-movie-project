@@ -21,7 +21,7 @@ public class Filme {
     private Long id;
 
     @NotBlank
-    @Column(nullable = false, length = 100)
+    @Column(nullable = false)
     private String nome;
 
     @Column(columnDefinition = "TEXT")
@@ -29,7 +29,7 @@ public class Filme {
 
     @NotNull
     @Column(nullable = false)
-    private String dataLancamento;
+    private String data;
 
     @Column
     private String duracao;
