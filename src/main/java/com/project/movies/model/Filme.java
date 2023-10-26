@@ -20,23 +20,23 @@ public class Filme {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank
-    @Column(nullable = false, length = 100)
+//    @NotBlank
+//    @Column(nullable = false, length = 100)
     private String nome;
 
-    @Column(columnDefinition = "TEXT")
+//    @Column(columnDefinition = "TEXT")
     private String descricao;
 
-    @NotNull
-    @Column(nullable = false)
+//    @NotNull
+//    @Column(nullable = false)
     private String dataLancamento;
 
-    @Column
+//    @Column
     private String duracao;
 
     @ElementCollection
     private List<String> generos = new ArrayList<>();
 
-    @Column
+//    @Column
     private String poster;
 }

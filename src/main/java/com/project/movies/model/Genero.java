@@ -17,9 +17,9 @@ public class Genero {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @Column(nullable = false, unique = true)
+//    @Column(nullable = false, unique = true)
     private String nome;
 
-    @ManyToMany(mappedBy = "generos")
-    private List<Filme> filmes;
+//    @ManyToMany(mappedBy = "generos")
+//    private List<Filme> filmes;
 }
