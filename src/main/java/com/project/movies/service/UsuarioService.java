@@ -2,6 +2,7 @@ package com.project.movies.service;
 
 import com.project.movies.model.Usuario;
 import com.project.movies.repository.UsuarioRepository;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -10,9 +11,12 @@ import java.util.Optional;
 @Service
 public class UsuarioService {
     private final UsuarioRepository usuarioRepository;
+    PasswordEncoder passwordEncoder;
 
-    public UsuarioService(UsuarioRepository usuarioRepository) {
+    public UsuarioService(UsuarioRepository usuarioRepository,PasswordEncoder passwordEncoder) {
         this.usuarioRepository = usuarioRepository;
+        this.passwordEncoder= passwordEncoder;
+
     }
 
     public List<Usuario> listarTodosOsUsuarios(){
@@ -52,10 +56,11 @@ public class UsuarioService {
             Usuario usuario = usuarioExistente.get();
             usuario.setApelido(usuarioAtualizado.getApelido());
             usuario.setEmail(usuarioAtualizado.getEmail());
-            usuario.setSenha(usuarioAtualizado.getSenha());
+            usuario.setSenha(passwordEncoder.encode(usuarioAtualizado.getSenha()));
             return usuarioRepository.save(usuario);
         } else {
             throw new RuntimeException("Usuario não encontrado para atualizar");
         }
     }
+
 }

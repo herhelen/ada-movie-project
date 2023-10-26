@@ -18,6 +18,10 @@ import java.io.IOException;
 
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
+    public JwtAuthenticationFilter (JwtTokenProvider tokenProvider,  UserDetailsService userDetailsService){
+        this.tokenProvider = tokenProvider;
+        this.userDetailsService = userDetailsService;
+    }
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
     String token = getTokenFromRequest(request);
@@ -36,10 +40,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     }
     private final JwtTokenProvider tokenProvider;
     private final UserDetailsService userDetailsService;
-    public JwtAuthenticationFilter (JwtTokenProvider tokenProvider, UserDetailsService userDetailsService){
-        this.tokenProvider = tokenProvider;
-        this.userDetailsService = userDetailsService;
-    }
     private String getTokenFromRequest(HttpServletRequest req){
         String bearer = req.getHeader("Authorization");
         if (StringUtils.hasText(bearer) && bearer.startsWith("Bearer ")){
