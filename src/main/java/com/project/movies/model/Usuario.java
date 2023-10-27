@@ -6,6 +6,8 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 
+import java.util.Set;
+
 @Entity
 @Getter
 @Setter
@@ -31,4 +33,10 @@ public class Usuario {
     @NotNull(message = "A senha é obrigatório.")
     @Size(min = 8, message = "A senha deve ter pelo menos 8 caracteres.")
     private String senha;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name="usuario_roles",
+            joinColumns = @JoinColumn(name="usuario_id",referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id",referencedColumnName = "id"))
+    private Set<Role> roles;
 }

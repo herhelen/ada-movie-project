@@ -21,6 +21,7 @@ public class Genero {
     @Column(nullable = false, unique = true)
     private String nome;
 
+
     @ElementCollection
     private List<String> filmes = new ArrayList<>();
 
