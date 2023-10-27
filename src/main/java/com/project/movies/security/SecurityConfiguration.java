@@ -39,7 +39,8 @@ public class SecurityConfiguration {
     protected SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
         http
                 .authorizeHttpRequests((auth)-> auth
-                        .requestMatchers("/movie-api/v1/*").permitAll()//ALTERAR-------------------------------------
+                        .requestMatchers("/movie-api/*").permitAll()
+                        .requestMatchers("/movie-api/v1/usuarios*").permitAll()
                         .anyRequest().authenticated()
                 ).exceptionHandling(exception -> exception.authenticationEntryPoint(jwtAuthenticationEntryPoint)
                 ).sessionManagement(session -> session

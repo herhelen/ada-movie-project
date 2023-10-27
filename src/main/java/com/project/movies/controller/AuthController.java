@@ -13,7 +13,7 @@ public class AuthController {
     public AuthController(AuthService authService) {
         this.authService = authService;
     }
-    @PostMapping("")
+    @PostMapping("/movie-api/v1/login")
     public ResponseEntity<AuthResponse> authenticateUser(@RequestBody LoginDTO dto){
         return ResponseEntity.ok(authService.login(dto));
     }
