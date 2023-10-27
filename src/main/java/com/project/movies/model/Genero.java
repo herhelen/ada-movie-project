@@ -3,6 +3,7 @@ package com.project.movies.model;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -17,9 +18,11 @@ public class Genero {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-//    @Column(nullable = false, unique = true)
+    @Column(nullable = false, unique = true)
     private String nome;
 
-//    @ManyToMany(mappedBy = "generos")
-//    private List<Filme> filmes;
+
+    @ElementCollection
+    private List<String> filmes = new ArrayList<>();
+
 }
