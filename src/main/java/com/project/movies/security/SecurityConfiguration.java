@@ -39,12 +39,11 @@ public class SecurityConfiguration {
     }
     @Bean
     protected SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
-        http
-                .csrf(AbstractHttpConfigurer::disable)
+        http.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((auth)-> auth
                         .requestMatchers("/movie-api/*").permitAll()
                         //.requestMatchers("/movie-api/v1/usuarios*").permitAll()
-                       .requestMatchers(HttpMethod.POST,"/movie-api/v1/usuarios*").permitAll()
+                        .requestMatchers(HttpMethod.POST,"/movie-api/v1/usuarios*").permitAll()
                         .requestMatchers("/movie-api/v1/login*").permitAll()
                         .anyRequest().authenticated()
                 ).exceptionHandling(exception -> exception.authenticationEntryPoint(jwtAuthenticationEntryPoint)
