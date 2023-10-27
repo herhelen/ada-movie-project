@@ -39,7 +39,7 @@ public class FilmeService {
         Filme filme = new Filme();
         filme.setId(Long.parseLong(filmedto.getId()));
         filme.setNome(filmedto.getTitle());
-        filme.setData(filmedto.getRelease_date());
+        //filme.setData(filmedto.getRelease_date());
         filme.setDescricao(filmedto.getOverview());
         filme.setDuracao(filmedto.getRuntime());
         for (GeneroDTO genero:filmedto.getGenres()) {
@@ -69,7 +69,7 @@ public class FilmeService {
             Filme filme = new Filme();
             filme.setId(Long.parseLong(filmedto.getId()));
             filme.setNome(filmedto.getTitle());
-            filme.setData(filmedto.getRelease_date());
+            //filme.setData(filmedto.getRelease_date());
             filme.setDescricao(filmedto.getOverview());
             for (String genero:filmedto.getGenre_ids()) {
                 filme.getGeneros().add(genero);
@@ -99,7 +99,7 @@ public class FilmeService {
             Filme filme = new Filme();
             filme.setId(Long.parseLong(filmedto.getId()));
             filme.setNome(filmedto.getTitle());
-            filme.setData(filmedto.getRelease_date());
+            //filme.setData(filmedto.getRelease_date());
             filme.setDescricao(filmedto.getOverview());
             for (String genero:filmedto.getGenre_ids()) {
                 filme.getGeneros().add(genero);
