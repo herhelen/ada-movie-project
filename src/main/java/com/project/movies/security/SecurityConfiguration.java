@@ -45,6 +45,10 @@ public class SecurityConfiguration {
                         //.requestMatchers("/movie-api/v1/usuarios*").permitAll()
                         .requestMatchers(HttpMethod.POST,"/movie-api/v1/usuarios*").permitAll()
                         .requestMatchers("/movie-api/v1/login*").permitAll()
+                        .requestMatchers("/v3/api-docs/**").permitAll()
+                        .requestMatchers("/swagger-ui/**").permitAll()
+                        .requestMatchers("/swagger-resources/**").permitAll()
+                        .requestMatchers("/swagger-ui.html").permitAll()
                         .anyRequest().authenticated()
                 ).exceptionHandling(exception -> exception.authenticationEntryPoint(jwtAuthenticationEntryPoint)
                 ).sessionManagement(session -> session

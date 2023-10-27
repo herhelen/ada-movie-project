@@ -1,9 +1,13 @@
 package com.project.movies.controller;
 
+import com.project.movies.exception.CustomConstraintExceptionHandler;
 import com.project.movies.model.Usuario;
+import com.project.movies.response.GenericResponse;
 import com.project.movies.service.UsuarioService;
+import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -11,7 +15,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/movie-api/v1/usuarios")
-public class UsuarioController {
+public class UsuarioController implements UsuarioControllerDoc {
     private final UsuarioService usuarioService;
 
     public UsuarioController(UsuarioService usuarioService) {
@@ -24,7 +28,7 @@ public class UsuarioController {
         try {
             return usuarioService.listarTodosOsUsuarios();
         } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro ao buscar todos os usuarios");
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro ao buscar todos os usuários");
         }
     }
 
@@ -34,7 +38,7 @@ public class UsuarioController {
         try {
             return usuarioService.buscarPorId(id);
         } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuario com ID " + id + " não encontrado");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuário com ID " + id + " não encontrado");
         }
     }
 
@@ -44,27 +48,54 @@ public class UsuarioController {
         try {
             return usuarioService.buscarPorApelido(apelido);
         } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro ao buscar contatos pelo apelido " + apelido);
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro ao buscar usuário pelo apelido " + apelido);
         }
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Usuario criarContato(@RequestBody Usuario usuario) {
+    public ResponseEntity<GenericResponse> criarContato(@RequestBody Usuario usuario) {
         try {
-            return usuarioService.criarOuAtualizarUsuario(usuario);
-        } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Erro ao criar contato");
+            Usuario usuarioGravado = usuarioService.criarOuAtualizarUsuario(usuario);
+
+            if (usuarioGravado != null) {
+                GenericResponse response = new GenericResponse();
+                response.setStatus(HttpStatus.CREATED.value());
+                response.setData(usuarioGravado);
+                response.setMessage("Usuário criado com sucesso!");
+
+                return new ResponseEntity<>(response, HttpStatus.CREATED);
+            }
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+
+        } catch (ConstraintViolationException exception) {
+            CustomConstraintExceptionHandler ex = new CustomConstraintExceptionHandler();
+            return new ResponseEntity<>(ex.processException(exception), HttpStatus.BAD_REQUEST);
+        } catch (Exception exception) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Erro ao criar usuário");
         }
     }
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Usuario atualizarContato(@PathVariable("id") Long id, @Valid @RequestBody Usuario usuarioAtualizado) {
+    public ResponseEntity<GenericResponse> atualizarContato(@PathVariable("id") Long id, @Valid @RequestBody Usuario usuarioAtualizado) {
         try {
-            return usuarioService.atualizarUsuario(id, usuarioAtualizado);
+            Usuario usuarioGravado = usuarioService.atualizarUsuario(id, usuarioAtualizado);
+
+            if (usuarioGravado != null) {
+                GenericResponse response = new GenericResponse();
+                response.setStatus(HttpStatus.OK.value());
+                response.setData(usuarioGravado);
+                response.setMessage("Usuário atualizado com sucesso!");
+
+                return new ResponseEntity<>(response, HttpStatus.OK);
+            }
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        } catch (ConstraintViolationException exception) {
+            CustomConstraintExceptionHandler ex = new CustomConstraintExceptionHandler();
+            return new ResponseEntity<>(ex.processException(exception), HttpStatus.BAD_REQUEST);
         } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Erro ao atualizar usuario com ID " + id);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Erro ao atualizar usuário com ID " + id);
         }
     }
 
@@ -74,7 +105,7 @@ public class UsuarioController {
         try {
             usuarioService.deletarUsuario(id);
         } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro ao deletar usuario com ID " + id);
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Erro ao deletar usuário com ID " + id);
         }
     }
 }
