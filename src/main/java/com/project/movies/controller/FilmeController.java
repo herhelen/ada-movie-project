@@ -12,7 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/movie-api/v1/filmes")
-public class FilmeController {
+public class FilmeController implements FilmeControllerDoc {
 
     FilmeService filmeService;
 

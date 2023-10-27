@@ -15,7 +15,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/movie-api/v1/usuarios")
-public class UsuarioController {
+public class UsuarioController implements UsuarioControllerDoc {
     private final UsuarioService usuarioService;
 
     public UsuarioController(UsuarioService usuarioService) {
