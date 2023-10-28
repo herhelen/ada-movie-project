@@ -64,7 +64,7 @@ public interface UsuarioControllerDoc {
             @ApiResponse(responseCode = "201", description = "Usuário criado com sucesso!", content = {
                     @Content(mediaType = "application/json", schema = @Schema(implementation = GenericResponse.class))
             }),
-            @ApiResponse(responseCode = "401", description = "Algum dado inválido", content = {
+            @ApiResponse(responseCode = "400", description = "Algum dado inválido", content = {
                     @Content(mediaType = "application/json", schema = @Schema(implementation = GenericResponse.class))
             }),
             @ApiResponse(responseCode = "401", description = "Usuário não logado!", content = @Content),
@@ -80,7 +80,7 @@ public interface UsuarioControllerDoc {
             @ApiResponse(responseCode = "200", description = "Usuário atualizado com sucesso!", content = {
                     @Content(mediaType = "application/json", schema = @Schema(implementation = GenericResponse.class))
             }),
-            @ApiResponse(responseCode = "401", description = "Algum dado inválido", content = {
+            @ApiResponse(responseCode = "400", description = "Algum dado inválido", content = {
                     @Content(mediaType = "application/json", schema = @Schema(implementation = GenericResponse.class))
             }),
             @ApiResponse(responseCode = "401", description = "Usuário não logado!", content = @Content),

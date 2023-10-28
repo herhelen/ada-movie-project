@@ -16,7 +16,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("movie-api/v1/listas")
-public class ListaController {
+public class ListaController implements ListaControllerDoc {
 
     ListaService listaService;
 

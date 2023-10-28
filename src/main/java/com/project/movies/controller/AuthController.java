@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/movie-api/v1/login")
-public class AuthController {
+public class AuthController implements AuthControllerDoc {
     private final AuthService authService;
 
     public AuthController(AuthService authService) {
