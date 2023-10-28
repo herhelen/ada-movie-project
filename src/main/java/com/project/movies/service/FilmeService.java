@@ -23,31 +23,39 @@ import java.util.regex.Pattern;
 @Service
 public class FilmeService {
 
-    public Filme buscarFilmePorId(long id) throws IOException, InterruptedException {
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("https://api.themoviedb.org/3/movie/" + id + "?language=pt-BR"))
-                .header("accept", "application/json")
-                .header("Authorization", "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmNDU4ZWMwZGQyYWFlYTFmODljZjgwNTExODBhZDQ5MyIsInN1YiI6IjY1MzZlZDA4NDFhYWM0MDBjMzMxYjIwOCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.JFb9Oi_3pG4mJuLt1EFtxbCOaC_ZgvIXldFRPM6w_gw")
-                .method("GET", HttpRequest.BodyPublishers.noBody())
-                .build();
+    public Filme buscarFilmePorId(long id) {
+        try {
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create("https://api.themoviedb.org/3/movie/" + id + "?language=pt-BR"))
+                    .header("accept", "application/json")
+                    .header("Authorization", "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmNDU4ZWMwZGQyYWFlYTFmODljZjgwNTExODBhZDQ5MyIsInN1YiI6IjY1MzZlZDA4NDFhYWM0MDBjMzMxYjIwOCIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.JFb9Oi_3pG4mJuLt1EFtxbCOaC_ZgvIXldFRPM6w_gw")
+                    .method("GET", HttpRequest.BodyPublishers.noBody())
+                    .build();
 
-        HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
+            HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
 
-        ObjectMapper objectMapper = new ObjectMapper();
-        FilmeDTO filmedto = objectMapper.readValue(response.body(), FilmeDTO.class);
+            if (response.statusCode() == 200) {
+                ObjectMapper objectMapper = new ObjectMapper();
+                FilmeDTO filmedto = objectMapper.readValue(response.body(), FilmeDTO.class);
 
-        Filme filme = new Filme();
-        filme.setId(Long.parseLong(filmedto.getId()));
-        filme.setNome(filmedto.getTitle());
-        //filme.setData(filmedto.getRelease_date());
-        filme.setDescricao(filmedto.getOverview());
-        filme.setDuracao(filmedto.getRuntime());
-        for (GeneroDTO genero:filmedto.getGenres()) {
-            filme.getGeneros().add(genero.getName());
+                Filme filme = new Filme();
+                filme.setId(Long.parseLong(filmedto.getId()));
+                filme.setNome(filmedto.getTitle());
+                filme.setDescricao(filmedto.getOverview());
+                filme.setDuracao(filmedto.getRuntime());
+                for (GeneroDTO genero : filmedto.getGenres()) {
+                    filme.getGeneros().add(genero.getName());
+                }
+                filme.setPoster(filmedto.getPoster_path());
+                return filme;
+            } else {
+                System.err.println("Filme não encontrado para o ID: " + id);
+                return null;
+            }
+        } catch (IOException | InterruptedException e) {
+            e.printStackTrace();
+            return null;
         }
-        filme.setPoster(filmedto.getPoster_path());
-
-        return filme;
     }
 
     public List<Filme> buscarFilmePorNome(String nome) throws IOException, InterruptedException {

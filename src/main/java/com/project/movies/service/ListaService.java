@@ -4,6 +4,7 @@ import com.project.movies.dto.lista.CriarListaDTO;
 import com.project.movies.dto.lista.ListaResponseDTO;
 import com.project.movies.dto.lista.ListaRespostaDTO;
 import com.project.movies.dto.lista.PaginaRespostaDTO;
+import com.project.movies.model.Filme;
 import com.project.movies.model.ItemLista;
 import com.project.movies.model.Lista;
 import com.project.movies.model.Usuario;
@@ -28,10 +29,14 @@ public class ListaService {
 
     private final ItemListaRepository itemListaRepository;
 
-    public ListaService(ListaRepository listaRepository, UsuarioRepository usuarioRepository, ItemListaRepository itemListaRepository) {
+    private final FilmeService filmeService;
+
+    public ListaService(ListaRepository listaRepository, UsuarioRepository usuarioRepository,
+                        ItemListaRepository itemListaRepository, FilmeService filmeService) {
         this.listaRepository = listaRepository;
         this.usuarioRepository = usuarioRepository;
         this.itemListaRepository = itemListaRepository;
+        this.filmeService = filmeService;
     }
 
     public PaginaRespostaDTO<ListaRespostaDTO> buscarListasDoUsuario(Long usuarioId, Pageable pageable) {
@@ -141,6 +146,23 @@ public class ListaService {
 
         return respostaDTO;
     }
+
+    public List<Filme> listarItensDaLista(Long usuarioId, Long listaId) {
+        Lista lista = listaRepository.findByIdAndUsuarioId(listaId, usuarioId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Lista não encontrada ou você não tem permissão para acessá-la"));
+
+        return lista.getItens().stream()
+                .map(itemLista -> {
+                    Filme filme = filmeService.buscarFilmePorId(itemLista.getIdFilme());
+                    if (filme != null) {
+                        return filme;
+                    } else {
+                        throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Filme não encontrado");
+                    }
+                })
+                .collect(Collectors.toList());
+    }
+
 
 
 }

@@ -24,6 +24,7 @@ public class UsuarioService {
     }
 
     public Usuario criarOuAtualizarUsuario(Usuario usuario) {
+        usuario.setSenha(passwordEncoder.encode(usuario.getSenha()));
         return this.usuarioRepository.save(usuario);
     }
 

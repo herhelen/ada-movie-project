@@ -30,7 +30,7 @@ public interface UsuarioControllerDoc {
             @ApiResponse(responseCode = "500", description = "Ocorreu um erro interno no servidor ao buscar todos os usuários!",
                     content = @Content)
     })
-    List<Usuario> buscarTodosOsContatos();
+    List<Usuario> buscarTodosOsUsuarios();
 
     @Operation(summary = "Busca de usuário por ID", security = @SecurityRequirement(name = "bearerAuth"))
     @ApiResponses(value = {
@@ -43,7 +43,7 @@ public interface UsuarioControllerDoc {
             @ApiResponse(responseCode = "500", description = "Ocorreu um erro interno no servidor ao buscar o usuário por ID!",
                     content = @Content)
     })
-    Usuario buscarContatoPorId(@PathVariable("id") Long id);
+    Usuario buscarUsuarioPorId(@PathVariable("id") Long id);
 
     @Operation(summary = "Busca de usuário por nome", security = @SecurityRequirement(name = "bearerAuth"))
     @ApiResponses(value = {
@@ -57,7 +57,7 @@ public interface UsuarioControllerDoc {
             @ApiResponse(responseCode = "500", description = "Ocorreu um erro interno no servidor ao buscar o usuário por nome!",
                     content = @Content)
     })
-    List<Usuario> buscarContatosPorNome(@PathVariable("apelido") String apelido);
+    List<Usuario> buscarUsuariosPorNome(@PathVariable("apelido") String apelido);
 
     @Operation(summary = "Criar um novo usuário", security = @SecurityRequirement(name = "bearerAuth"))
     @ApiResponses(value = {
@@ -73,7 +73,7 @@ public interface UsuarioControllerDoc {
             @ApiResponse(responseCode = "500", description = "Ocorreu um erro interno no servidor ao criar um usuário novo!",
                     content = @Content)
     })
-    ResponseEntity<GenericResponse> criarContato(@RequestBody Usuario usuario);
+    ResponseEntity<GenericResponse> criarUsuario(@RequestBody Usuario usuario);
 
     @Operation(summary = "Atualizar usuário por ID", security = @SecurityRequirement(name = "bearerAuth"))
     @ApiResponses(value = {
@@ -89,7 +89,7 @@ public interface UsuarioControllerDoc {
             @ApiResponse(responseCode = "500", description = "Ocorreu um erro interno no servidor ao atualizar o usuário!",
                     content = @Content)
     })
-    ResponseEntity<GenericResponse> atualizarContato(@PathVariable("id") Long id, @Valid @RequestBody Usuario usuarioAtualizado);
+    ResponseEntity<GenericResponse> atualizarUsuario(@PathVariable("id") Long id, @Valid @RequestBody Usuario usuarioAtualizado);
 
     @Operation(summary = "Excluir um usuário por ID", security = @SecurityRequirement(name = "bearerAuth"))
     @ApiResponses(value = {
@@ -100,6 +100,6 @@ public interface UsuarioControllerDoc {
             @ApiResponse(responseCode = "500", description = "Ocorreu um erro interno no servidor ao excluir o usuário!",
                     content = @Content)
     })
-    void deletarContato(@PathVariable("id") Long id);
+    void deletarUsuario(@PathVariable("id") Long id);
 
 }

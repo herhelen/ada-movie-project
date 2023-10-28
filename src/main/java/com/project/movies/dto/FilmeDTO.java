@@ -14,7 +14,6 @@ import java.util.List;
 public class FilmeDTO {
     private String adult;
     private String backdrop_path;
-    private String belongs_to_collection;
     private String budget;
     private List<GeneroDTO> genres; // id e name
     private String homepage;

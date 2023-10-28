@@ -24,7 +24,7 @@ public class UsuarioController implements UsuarioControllerDoc {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<Usuario> buscarTodosOsContatos() {
+    public List<Usuario> buscarTodosOsUsuarios() {
         try {
             return usuarioService.listarTodosOsUsuarios();
         } catch (Exception e) {
@@ -34,7 +34,7 @@ public class UsuarioController implements UsuarioControllerDoc {
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public Usuario buscarContatoPorId(@PathVariable("id") Long id) {
+    public Usuario buscarUsuarioPorId(@PathVariable("id") Long id) {
         try {
             return usuarioService.buscarPorId(id);
         } catch (Exception e) {
@@ -44,7 +44,7 @@ public class UsuarioController implements UsuarioControllerDoc {
 
     @GetMapping("/apelido/{apelido}")
     @ResponseStatus(HttpStatus.OK)
-    public List<Usuario> buscarContatosPorNome(@PathVariable("apelido") String apelido) {
+    public List<Usuario> buscarUsuariosPorNome(@PathVariable("apelido") String apelido) {
         try {
             return usuarioService.buscarPorApelido(apelido);
         } catch (Exception e) {
@@ -54,7 +54,7 @@ public class UsuarioController implements UsuarioControllerDoc {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<GenericResponse> criarContato(@RequestBody Usuario usuario) {
+    public ResponseEntity<GenericResponse> criarUsuario(@RequestBody Usuario usuario) {
         try {
             Usuario usuarioGravado = usuarioService.criarOuAtualizarUsuario(usuario);
 
@@ -78,7 +78,7 @@ public class UsuarioController implements UsuarioControllerDoc {
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<GenericResponse> atualizarContato(@PathVariable("id") Long id, @Valid @RequestBody Usuario usuarioAtualizado) {
+    public ResponseEntity<GenericResponse> atualizarUsuario(@PathVariable("id") Long id, @Valid @RequestBody Usuario usuarioAtualizado) {
         try {
             Usuario usuarioGravado = usuarioService.atualizarUsuario(id, usuarioAtualizado);
 
@@ -101,7 +101,7 @@ public class UsuarioController implements UsuarioControllerDoc {
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deletarContato(@PathVariable("id") Long id) {
+    public void deletarUsuario(@PathVariable("id") Long id) {
         try {
             usuarioService.deletarUsuario(id);
         } catch (Exception e) {
